@@ -8,86 +8,83 @@ public class VerticalOrderTraversalBt {
 
         Node(int d) {
             data = d;
-            left = right = null;
         }
     }
 
-    static Node root;
+    static class Pair {
+        Node node;
+        int hd;
+
+        Pair(Node n, int h) {
+            node = n;
+            hd = h;
+        }
+    }
+
     static Scanner sc = new Scanner(System.in);
 
-    static void create(int val) {
-        if (val == -1) return;
+    // 🔹 Your Level Order Build (used as-is)
+    static Node buildTree() {
+        int val = sc.nextInt();
+        Node root = new Node(val);
 
         Queue<Node> q = new LinkedList<>();
-        root = new Node(val);
         q.offer(root);
 
         while (!q.isEmpty()) {
             Node temp = q.poll();
 
-            if (!sc.hasNextInt()) break;
-            int v = sc.nextInt();
-            if (v != -1) {
-                temp.left = new Node(v);
+            int l = sc.nextInt();
+            if (l != -1) {
+                temp.left = new Node(l);
                 q.offer(temp.left);
             }
 
-            if (!sc.hasNextInt()) break;
-            v = sc.nextInt();
-            if (v != -1) {
-                temp.right = new Node(v);
+            int r = sc.nextInt();
+            if (r != -1) {
+                temp.right = new Node(r);
                 q.offer(temp.right);
             }
         }
+
+        return root;
     }
 
-    static ArrayList<ArrayList<Integer>> verticalOrder(Node root) {
+    // 🔹 Vertical Order Traversal
+    static List<List<Integer>> verticalOrder(Node root) {
 
-        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+        List<List<Integer>> ans = new ArrayList<>();
         if (root == null) return ans;
 
-        TreeMap<Integer, ArrayList<Integer>> map = new TreeMap<>();
+        TreeMap<Integer, List<Integer>> map = new TreeMap<>();
+        Queue<Pair> q = new LinkedList<>();
 
-        Queue<Node> qNode = new LinkedList<>();
-        Queue<Integer> qHd = new LinkedList<>();
+        q.offer(new Pair(root, 0));
 
-        qNode.add(root);
-        qHd.add(0);
+        while (!q.isEmpty()) {
+            Pair p = q.poll();
 
-        while (!qNode.isEmpty()) {
+            map.putIfAbsent(p.hd, new ArrayList<>());
+            map.get(p.hd).add(p.node.data);
 
-            Node curr = qNode.poll();
-            int hd = qHd.poll();
+            if (p.node.left != null)
+                q.offer(new Pair(p.node.left, p.hd - 1));
 
-            map.putIfAbsent(hd, new ArrayList<>());
-            map.get(hd).add(curr.data);
-
-            if (curr.left != null) {
-                qNode.add(curr.left);
-                qHd.add(hd - 1);
-            }
-
-            if (curr.right != null) {
-                qNode.add(curr.right);
-                qHd.add(hd + 1);
-            }
+            if (p.node.right != null)
+                q.offer(new Pair(p.node.right, p.hd + 1));
         }
 
-        for (ArrayList<Integer> list : map.values()) {
-            ans.add(list);
-        }
-
+        ans.addAll(map.values());
         return ans;
     }
 
     public static void main(String[] args) {
 
-        int rootVal = sc.nextInt();   // first input
-        create(rootVal);
+        Node root = buildTree();
 
-        ArrayList<ArrayList<Integer>> res = verticalOrder(root);
+        List<List<Integer>> res = verticalOrder(root);
 
-        for (ArrayList<Integer> list : res) {
+        for (List<Integer> list : res) {
             for (int val : list)
                 System.out.print(val + " ");
             System.out.println();

@@ -6,7 +6,6 @@ class Node {
 
     Node(int d) {
         data = d;
-        left = right = null;
     }
 }
 
@@ -22,35 +21,36 @@ class Pair {
 
 public class Views {
 
-    static Node root;
     static Scanner sc = new Scanner(System.in);
 
-    // Build Tree (Level Order)
-    static void create(int val) {
+    // 🔹 Simplest Level Order Build
+    static Node buildTree() {
+        int val = sc.nextInt();
+        Node root = new Node(val);
+
         Queue<Node> q = new LinkedList<>();
-        root = new Node(val);
         q.offer(root);
 
         while (!q.isEmpty()) {
             Node temp = q.poll();
 
-            if (!sc.hasNextInt()) break;
-            int v = sc.nextInt();
-            if (v != -1) {
-                temp.left = new Node(v);
+            int l = sc.nextInt();
+            if (l != -1) {
+                temp.left = new Node(l);
                 q.offer(temp.left);
             }
 
-            if (!sc.hasNextInt()) break;
-            v = sc.nextInt();
-            if (v != -1) {
-                temp.right = new Node(v);
+            int r = sc.nextInt();
+            if (r != -1) {
+                temp.right = new Node(r);
                 q.offer(temp.right);
             }
         }
+
+        return root;
     }
 
-    // Left View
+    // 🔹 Left View
     static void leftView(Node root, List<Integer> res, int level) {
         if (root == null) return;
 
@@ -61,7 +61,7 @@ public class Views {
         leftView(root.right, res, level + 1);
     }
 
-    // Right View
+    // 🔹 Right View
     static void rightView(Node root, List<Integer> res, int level) {
         if (root == null) return;
 
@@ -72,11 +72,14 @@ public class Views {
         rightView(root.left, res, level + 1);
     }
 
-    // Top View
+    // 🔹 Top View
     static List<Integer> topView(Node root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) return res;
+
         TreeMap<Integer, Integer> map = new TreeMap<>();
         Queue<Pair> q = new LinkedList<>();
-        
+
         q.offer(new Pair(root, 0));
 
         while (!q.isEmpty()) {
@@ -91,11 +94,15 @@ public class Views {
                 q.offer(new Pair(p.node.right, p.hd + 1));
         }
 
-        return new ArrayList<>(map.values());
+        res.addAll(map.values());
+        return res;
     }
 
-    // Bottom View
+    // 🔹 Bottom View
     static List<Integer> bottomView(Node root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) return res;
+
         TreeMap<Integer, Integer> map = new TreeMap<>();
         Queue<Pair> q = new LinkedList<>();
 
@@ -113,13 +120,13 @@ public class Views {
                 q.offer(new Pair(p.node.right, p.hd + 1));
         }
 
-        return new ArrayList<>(map.values());
+        res.addAll(map.values());
+        return res;
     }
 
     public static void main(String[] args) {
 
-        int rootVal = sc.nextInt();
-        create(rootVal);
+        Node root = buildTree();
 
         // Left View
         List<Integer> left = new ArrayList<>();
