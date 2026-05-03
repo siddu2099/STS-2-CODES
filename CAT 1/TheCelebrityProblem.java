@@ -1,5 +1,4 @@
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 
 class Main {
     public static void main(String[] args) {
@@ -17,40 +16,30 @@ class Main {
             }
         }
 
-        Stack<Integer> st = new Stack<>();
+        List<Integer> celebrities = new ArrayList<>();
 
-        // Step 1: push all people
-        for (int i = 0; i < n; i++) {
-            st.push(i);
-        }
+        // Check each person
+        for (int c = 0; c < n; c++) {
+            boolean isCelebrity = true;
 
-        // Step 2: eliminate non-celebrities
-        while (st.size() > 1) {
-            int x = st.pop();
-            int y = st.pop();
+            for (int i = 0; i < n; i++) {
+                if (i != c && (a[c][i] == 1 || a[i][c] == 0)) {
+                    isCelebrity = false;
+                    break;
+                }
+            }
 
-            if (a[x][y] == 1)
-                st.push(y);
-            else
-                st.push(x);
-        }
-
-        // Step 3: verify candidate
-        int c = st.pop();
-        boolean isCelebrity = true;
-
-        for (int i = 0; i < n; i++) {
-            if (i != c && (a[c][i] == 1 || a[i][c] == 0)) {
-                isCelebrity = false;
-                break;
+            if (isCelebrity) {
+                celebrities.add(c);
             }
         }
 
-        // Step 4: output
-        if (isCelebrity)
-            System.out.println("Celebrity is: " + c);
-        else
+        // Output
+        if (celebrities.isEmpty()) {
             System.out.println("No celebrity found");
+        } else {
+            System.out.println("Celebrities are: " + celebrities);
+        }
 
         sc.close();
     }
