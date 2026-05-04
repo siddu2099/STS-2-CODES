@@ -1,4 +1,3 @@
-package FAT;
 
 import java.util.*;
 
