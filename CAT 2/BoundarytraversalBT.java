@@ -12,35 +12,35 @@ public class BoundarytraversalBT {
         }
     }
 
-    static Node root;
     static Scanner sc = new Scanner(System.in);
 
-    // Build Tree (Level Order)
-    static void create(int val) {
+    // 🔹 YOUR buildTree (used here)
+    static Node buildTree() {
+        int val = sc.nextInt();
+        if (val == -1) return null;
 
-        if (val == -1) return;
+        Node root = new Node(val);
 
         Queue<Node> q = new LinkedList<>();
-        root = new Node(val);
         q.offer(root);
 
         while (!q.isEmpty()) {
             Node temp = q.poll();
 
-            if (!sc.hasNextInt()) break;
-            int v = sc.nextInt();
-            if (v != -1) {
-                temp.left = new Node(v);
+            int l = sc.nextInt();
+            if (l != -1) {
+                temp.left = new Node(l);
                 q.offer(temp.left);
             }
 
-            if (!sc.hasNextInt()) break;
-            v = sc.nextInt();
-            if (v != -1) {
-                temp.right = new Node(v);
+            int r = sc.nextInt();
+            if (r != -1) {
+                temp.right = new Node(r);
                 q.offer(temp.right);
             }
         }
+
+        return root;
     }
 
     static boolean isLeaf(Node node) {
@@ -75,6 +75,7 @@ public class BoundarytraversalBT {
                 curr = curr.left;
         }
 
+        // reverse
         for (int i = temp.size() - 1; i >= 0; i--)
             res.add(temp.get(i));
     }
@@ -108,8 +109,7 @@ public class BoundarytraversalBT {
 
     public static void main(String[] args) {
 
-        int rootVal = sc.nextInt();   // first value
-        create(rootVal);              // build tree
+        Node root = buildTree();   // ✅ use this instead
 
         ArrayList<Integer> result = boundaryTraversal(root);
 

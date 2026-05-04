@@ -18,5 +18,7 @@ public class HashMapToTreeMap {
         for (Map.Entry<Integer, String> entry : treeMap.entrySet()) {
             System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
         }
+
+        
     }
 }

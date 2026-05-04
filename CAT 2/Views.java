@@ -15,7 +15,7 @@ class Pair {
 
     Pair(Node n, int h) {
         node = n;
-        hd = h;
+        hd = h;0
     }
 }
 
