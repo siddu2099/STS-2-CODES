@@ -15,7 +15,7 @@ class Pair {
 
     Pair(Node n, int h) {
         node = n;
-        hd = h;0
+        hd = h;
     }
 }
 
@@ -26,6 +26,7 @@ public class Views {
     // 🔹 Simplest Level Order Build
     static Node buildTree() {
         int val = sc.nextInt();
+        if (val == -1) return null;
         Node root = new Node(val);
 
         Queue<Node> q = new LinkedList<>();

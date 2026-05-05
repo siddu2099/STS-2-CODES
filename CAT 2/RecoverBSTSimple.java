@@ -8,7 +8,6 @@ public class RecoverBSTSimple {
 
         Node(int d) {
             data = d;
-            left = right = null;
         }
     }
 
@@ -17,30 +16,30 @@ public class RecoverBSTSimple {
     static Scanner sc = new Scanner(System.in);
 
     // 🌳 Build Tree (Level Order with -1)
-    static void create(int val) {
-        if (val == -1) return;
+    static Node buildTree() {
+        int val = sc.nextInt();
+        Node root = new Node(val);
 
         Queue<Node> q = new LinkedList<>();
-        root = new Node(val);
         q.offer(root);
 
         while (!q.isEmpty()) {
             Node temp = q.poll();
 
-            if (!sc.hasNextInt()) break;
-            int v = sc.nextInt();
-            if (v != -1) {
-                temp.left = new Node(v);
+            int l = sc.nextInt();
+            if (l != -1) {
+                temp.left = new Node(l);
                 q.offer(temp.left);
             }
 
-            if (!sc.hasNextInt()) break;
-            v = sc.nextInt();
-            if (v != -1) {
-                temp.right = new Node(v);
+            int r = sc.nextInt();
+            if (r != -1) {
+                temp.right = new Node(r);
                 q.offer(temp.right);
             }
         }
+
+        return root;
     }
 
     // 🔍 Inorder traversal to detect swapped nodes
@@ -63,7 +62,7 @@ public class RecoverBSTSimple {
     }
 
     // 🔄 Recover BST
-    static void recoverTree() {
+    static void recoverTree(Node root) {
         inorder(root);
 
         if (first != null && second != null) {
@@ -85,11 +84,10 @@ public class RecoverBSTSimple {
     // 🚀 Main
     public static void main(String[] args) {
 
-        int rootVal = sc.nextInt();  // first value
-        create(rootVal);             // build tree
+        root = buildTree();   // ✅ use new function
 
-        recoverTree();               // fix BST
+        recoverTree(root);    // fix BST
 
-        display(root);               // print inorder (should be sorted)
+        display(root);        // inorder (sorted output)
     }
 }
